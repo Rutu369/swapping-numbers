@@ -23,52 +23,62 @@ Write a Node.js program that performs the following stream operations:
 5. Use a decompress stream to unzip the compressed file. 
 
 Code: 
+const fs = require("fs");
+const zlib = require("zlib");
+const path = require("path");
 
-// Import required modules 
+const filePath = path.join(__dirname, "logfile.txt");
 
-const fs = require("fs"); 
+// ✅ Ensure file exists BEFORE anything
+if (!fs.existsSync(filePath)) {
+  console.error("❌ logfile.txt NOT FOUND. Please create it first.");
+  process.exit(1);
+}
 
-const zlib = require("zlib"); 
+// 1. Read stream
+const readStream = fs.createReadStream(filePath, "utf8");
 
-// 1. Create a readable stream to read data from logfile.txt 
+readStream.on("data", (chunk) => {
+  console.log("Reading chunk:");
+  console.log(chunk);
+});
 
-const readStream = fs.createReadStream("logfile.txt", "utf8"); 
+readStream.on("error", (err) => {
+  console.error("Read error:", err.message);
+});
 
-// Display data chunks while reading 
-
-readStream.on("data", (chunk) => { 
-
- console.log("Reading chunk:"); 
-
- console.log(chunk); 
-
-}); 
-
-// 2. Create a writable stream to write data into output.txt 
-
+// 2. Write stream
 const writeStream = fs.createWriteStream("output.txt");
-// 3. Use piping to copy data from logfile.txt to output.txt 
 
-readStream.pipe(writeStream); 
+// 3. Copy using pipe
+readStream.pipe(writeStream);
 
-console.log("Data is being copied using pipe..."); 
+writeStream.on("finish", () => {
+  console.log("✅ Data copied successfully");
 
-// 4. Use stream chaining to compress the file into logfile.txt.gz 
+  // 4. Compress ONLY AFTER copy finishes
+  const gzip = fs.createReadStream(filePath)
+    .pipe(zlib.createGzip())
+    .pipe(fs.createWriteStream("logfile.txt.gz"));
 
-fs.createReadStream("logfile.txt") 
+  gzip.on("finish", () => {
+    console.log("✅ File compressed successfully");
 
- .pipe(zlib.createGzip()) 
+    // 5. Decompress ONLY AFTER compression finishes
+    const gunzip = fs.createReadStream("logfile.txt.gz")
+      .pipe(zlib.createGunzip())
+      .pipe(fs.createWriteStream("logfile_uncompressed.txt"));
 
- .pipe(fs.createWriteStream("logfile.txt.gz")); 
+    gunzip.on("finish", () => {
+      console.log("✅ File decompressed successfully");
+    });
 
-console.log("File compressed successfully"); 
+    gunzip.on("error", console.error);
+  });
 
-// 5. Decompress the compressed file 
+  gzip.on("error", console.error);
+});
 
-fs.createReadStream("logfile.txt.gz") 
-
- .pipe(zlib.createGunzip()) 
-
- .pipe(fs.createWriteStream("logfile_uncompressed.txt")); 
-
-console.log("File decompressed successfully");
+writeStream.on("error", (err) => {
+  console.error("Write error:", err.message);
+});
