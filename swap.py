@@ -29,4 +29,4 @@ class Student
         obj.display("Rahul", 85);
         obj.display("Priya", 92.5);
     }
-} 
+}
