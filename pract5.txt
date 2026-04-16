@@ -1,0 +1,33 @@
+A university wants to develop a system to manage its internal structure in an organized way. Each university consists of multiple departments such as Computer Science, Mechanical, and Civil. Since a department is a part of the university and cannot exist independently, it is defined inside the University class using a nested (inner) class. This helps in better organization and clearly represents the real-world relationship between a university and its departments. Write a Java program to demonstrate a nested class where Department is defined inside University and displays their details.
+       class University 
+   {
+
+    String uniName = "ABC University";
+
+    // Nested class
+    class Department 
+    {
+        String deptName = "Computer Science";
+
+        void display() 
+    {
+            System.out.println("University: " + uniName);
+            System.out.println("Department: " + deptName);
+        }
+    }
+
+    public static void main(String[] args) 
+  {
+        University u = new University();
+
+        // Creating object of nested class
+        University.Department d = u.new Department();
+
+        d.display();
+    }
+}
+
+
+Output:
+University: ABC University
+Department: Computer Science
