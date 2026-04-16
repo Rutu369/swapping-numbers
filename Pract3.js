@@ -1,84 +1,65 @@
-Program 3: 
+A college wants to develop a student management system that can store student details based on the available information at the time of admission. In some cases, only the student’s name is available, in other cases both name and age are known, and sometimes complete details such as name, age, and course are provided. To handle these different situations efficiently, the system uses constructor overloading, where multiple constructors with different parameters are defined in the same class. This allows creating student objects in different ways depending on the available data.Write a Java program to create a class Student using constructor overloading with three constructors to initialize name, age, and course. Also display the student details.
+      class Student 
+   {
+    String name;
+    int age;
+    String course;
 
-Large File Processing System 
+    // Constructor 1: Only name
+    Student(String n) {
+        name = n;
+        age = 0;
+        course = "Not Assigned";
+    }
 
-Scenario 
+    // Constructor 2: Name and age
+    Student(String n, int a) {
+        name = n;
+        age = a;
+        course = "Not Assigned";
+    }
 
-A media company needs to process large log files efficiently without loading the entire file into 
+    // Constructor 3: Name, age and course
+    Student(String n, int a, String c) {
+        name = n;
+        age = a;
+        course = c;
+    }
 
-memory. 
+    // Method to display details
+    void display() {
+        System.out.println("Name: " + name);
+        System.out.println("Age: " + age);
+System.out.println("Course: " + course);
+        System.out.println();
+    }
 
-Task 
+    public static void main(String[] args)
+ {
+        // Using different constructors
+        Student s1 = new Student("Anita");
+        Student s2 = new Student("Rahul", 20);
+        Student s3 = new Student("Priya", 21, "Computer Science");
 
-Write a Node.js program that performs the following stream operations: 
-
-1. Use a readable stream to read data from logfile.txt. 
-
-2. Use a writable stream to write the data into output.txt. 
-
-3. Use piping to copy data from logfile.txt to output.txt. 
-
-4. Use stream chaining to compress the file into logfile.txt.gz. 
-
-5. Use a decompress stream to unzip the compressed file. 
-
-Code: 
-const fs = require("fs");
-const zlib = require("zlib");
-const path = require("path");
-
-const filePath = path.join(__dirname, "logfile.txt");
-
-// ✅ Ensure file exists BEFORE anything
-if (!fs.existsSync(filePath)) {
-  console.error("❌ logfile.txt NOT FOUND. Please create it first.");
-  process.exit(1);
+        // Display details
+        s1.display();
+        s2.display();
+        s3.display();
+    }
 }
 
-// 1. Read stream
-const readStream = fs.createReadStream(filePath, "utf8");
 
-readStream.on("data", (chunk) => {
-  console.log("Reading chunk:");
-  console.log(chunk);
-});
+OUTPUT:
 
-readStream.on("error", (err) => {
-  console.error("Read error:", err.message);
-});
 
-// 2. Write stream
-const writeStream = fs.createWriteStream("output.txt");
+Name: Anita
+Age: 0
+Course: Not Assigned
 
-// 3. Copy using pipe
-readStream.pipe(writeStream);
+Name: Rahul
+Age: 20
+Course: Not Assigned
 
-writeStream.on("finish", () => {
-  console.log("✅ Data copied successfully");
-
-  // 4. Compress ONLY AFTER copy finishes
-  const gzip = fs.createReadStream(filePath)
-    .pipe(zlib.createGzip())
-    .pipe(fs.createWriteStream("logfile.txt.gz"));
-
-  gzip.on("finish", () => {
-    console.log("✅ File compressed successfully");
-
-    // 5. Decompress ONLY AFTER compression finishes
-    const gunzip = fs.createReadStream("logfile.txt.gz")
-      .pipe(zlib.createGunzip())
-      .pipe(fs.createWriteStream("logfile_uncompressed.txt"));
-
-    gunzip.on("finish", () => {
-      console.log("✅ File decompressed successfully");
-    });
-
-    gunzip.on("error", console.error);
-  });
-
-  gzip.on("error", console.error);
-});
-
-writeStream.on("error", (err) => {
-  console.error("Write error:", err.message);
-});
+Name: Priya
+Age: 21
+Course: Computer Science
