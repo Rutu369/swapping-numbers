@@ -1,104 +1,35 @@
-Program 2: 
+A company wants to create an employee record system where employee details like employee ID and name are initialized automatically when an object is created. Instead of assigning values separately using methods, the system uses a constructor to initialize data at the time of object creation. This approach makes the program more efficient, reduces code complexity, and ensures that every employee object is created with proper initial values. Write a Java program to create a class Employee and initialize its data using a constructor. Also display the employee details.
+            class Employee {
+    int id;
+    String name;
 
-Employee Record Management System 
+    // Constructor
+    Employee(int i, String n) {
+        id = i;
+        name = n;
+    }
 
-Scenario 
+    // Method to display data
+    void display() {
+        System.out.println("Employee ID: " + id);
+        System.out.println("Employee Name: " + name);
+    }
 
-A company wants to store and manage employee records in a file using Node.js. 
+    public static void main(String[] args) {
+        // Creating objects using constructor
+        Employee e1 = new Employee(101, "Anita");
+        Employee e2 = new Employee(102, "Rahul");
 
-Task 
+        // Displaying details
+        e1.display();
+        e2.display();
+    }
+}
 
-Write a Node.js program that performs the following file system operations: 
 
-1. Create a file employee.txt and store employee details. 
+OUTPUT
+Employee ID: 101
+Employee Name: Anita
+Employee ID: 102
+Employee Name: Rahul
 
-2. Write employee data into the file. 
-
-3. Append new employee records to the same file. 
-
-4. Read the file synchronously and display the employee data. 
-
-5. Read the file asynchronously and display the employee data. 
-
-6. Open the file and display a message when it opens successfully. 
-
-7. Delete the file after displaying the records. 
-
-// Import File System module 
-
-const fs = require("fs"); 
-
-// Employee data 
-
-const employeeData = "Employee ID: 101\nName: \nDepartment: IT\n"; 
-
-const newEmployee = "Employee ID: 102\nName: \nDepartment: HR\n"; 
-
-// 1. Create file and write employee data 
-
-fs.writeFileSync("employee.txt", employeeData); 
-
-console.log("File created and employee data written"); 
-
-// 2. Append new employee record 
-
-fs.appendFileSync("employee.txt", newEmployee); 
-
-console.log("New employee record appended"); 
-
-// 3. Read file synchronously
-
-const dataSync = fs.readFileSync("employee.txt", "utf8"); 
-
-console.log("\nSynchronous Read:"); 
-
-console.log(dataSync); 
-
-// 4. Read file asynchronously 
-
-fs.readFile("employee.txt", "utf8", (err, data) => { 
-
- if (err) { 
-
- console.log(err); 
-
- return; 
-
- } 
-
- console.log("\nAsynchronous Read:"); 
-
- console.log(data); 
-
- // 5. Open the file 
-
- fs.open("employee.txt", "r", (err, fd) => { 
-
- if (err) { 
-
- console.log(err); 
-
- return; 
-
- } 
-
- console.log("\nFile opened successfully"); 
-
- // 6. Delete the file 
-
- fs.unlink("employee.txt", (err) => { 
-
- if (err) { 
-
- console.log(err); 
-
- return; 
-
- }
-   console.log("File deleted successfully"); 
-
- }); 
-
- }); 
-
-});
